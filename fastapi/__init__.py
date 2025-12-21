@@ -4,6 +4,8 @@ import inspect
 import json
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
+from pydantic import BaseModel
+
 from .exceptions import HTTPException
 from .middleware.cors import CORSMiddleware
 from .responses import PlainTextResponse
@@ -83,6 +85,7 @@ class _Response:
 
 
 class TestClient:
+    __test__ = False  # чтобы pytest не рассматривал класс как тестовый
     def __init__(self, app: FastAPI):
         self.app = app
 
@@ -120,17 +123,28 @@ class TestClient:
         kwargs: Dict[str, Any] = {}
         for name, param in sig.parameters.items():
             ann = param.annotation
+            if isinstance(ann, str):
+                ann = func.__globals__.get(ann, ann)
             if ann is Request or name == "req":
                 kwargs[name] = request
                 continue
-            if ann.__class__.__name__ == "_GenericAlias" and getattr(ann, "__origin__", None) is Optional and ann.__args__[0] is str and name.startswith("x_api_key"):
-                kwargs[name] = headers.get("x-api-key") or headers.get("x_api_key") or headers.get("x_api-key")
+            if isinstance(param.default, Header):
+                kwargs[name] = headers.get("x-api-key") or headers.get("x_api_key") or headers.get("x_api-key") or param.default()
+                continue
+            if (
+                ann.__class__.__name__ == "_GenericAlias"
+                and getattr(ann, "__origin__", None) is Optional
+                and ann.__args__
+                and issubclass(ann.__args__[0], str)
+                and name.startswith("x_api_key")
+            ):
+                kwargs[name] = headers.get("x-api-key") or headers.get("x_api_key") or headers.get("x-api-key")
+                continue
+            if isinstance(ann, type) and issubclass(ann, BaseModel):
+                kwargs[name] = ann(**(request._json or {}))
                 continue
             if ann is inspect._empty and param.default is inspect._empty:
                 kwargs[name] = None
-                continue
-            if hasattr(ann, "__mro__") and BaseModel in getattr(ann, "__mro__", []):
-                kwargs[name] = ann(**(request._json or {}))
                 continue
             if name in query:
                 kwargs[name] = type(param.default)(query[name]) if param.default is not inspect._empty else query[name]
