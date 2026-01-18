@@ -1,0 +1,5 @@
+AKSI DevOps AI Connector
+UID: AKSI-CONNECTOR-b247cfde-0e7b-4461-8fc5-5e30d138a06e
+
+This distribution includes cryptographic materials. Keep `.aksi/aksi_private_ed25519.pem` SECRET (do not commit).
+Public verification key must be placed at `.aksi/aksi_public_ed25519.pem` (PEM).
