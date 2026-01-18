@@ -1,0 +1,17 @@
+{
+  "name": "AKSI DevOps AI Connector",
+  "uid": "AKSI-CONNECTOR-b247cfde-0e7b-4461-8fc5-5e30d138a06e",
+  "created_at": "2025-11-03T13:00:00+01:00",
+  "signing": {
+    "algorithm": "ed25519",
+    "public_key_pem": "<WILL_BE_FILLED>"
+  },
+  "maintainer": {
+    "name": "Alfiya (AKSI)",
+    "contact": "n/a"
+  },
+  "versioning": {
+    "scheme": "semver",
+    "initial_version": "1.0.0-initial"
+  }
+}
