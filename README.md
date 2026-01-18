@@ -134,6 +134,64 @@ Append log entry
 Export all logs
 - `format` (optional): export format (json or txt)
 
+### AI Work Tracking (NEW)
+
+#### `POST /aksi/ai-work/session`
+Track AI work sessions when working on code
+```json
+// Start session
+{
+  "action": "start",
+  "metadata": {"task": "implement feature X"}
+}
+
+// Update session
+{
+  "action": "update",
+  "session_id": "session_id_here",
+  "files_modified": ["main.py", "test.py"],
+  "lines_changed": 150,
+  "language": "python",
+  "operation": "create",  // create, update, delete, refactor
+  "commit_hash": "abc123"
+}
+
+// End session
+{
+  "action": "end",
+  "session_id": "session_id_here"
+}
+```
+
+#### `GET /aksi/ai-work/sessions?limit=50&status=active`
+Get AI work sessions
+- `limit` (optional): number of records (default 50)
+- `status` (optional): filter by status (active, completed)
+
+### Cryptographic Key Management (NEW)
+
+#### `POST /aksi/crypto/record-key`
+Record cryptographic keys created during AI work
+```json
+{
+  "key_type": "ed25519",
+  "public_key": "-----BEGIN PUBLIC KEY-----\n...\n-----END PUBLIC KEY-----",
+  "purpose": "signing",  // signing, verification, encryption
+  "algorithm": "Ed25519",
+  "created_by": "AI-Agent-Name",
+  "metadata": {"environment": "production"}
+}
+```
+
+#### `GET /aksi/crypto/keys?limit=50&key_type=ed25519&purpose=signing`
+Get list of recorded cryptographic keys
+- `limit` (optional): number of records (default 50)
+- `key_type` (optional): filter by key type (ed25519, rsa, ecdsa)
+- `purpose` (optional): filter by purpose (signing, verification, encryption)
+
+#### `GET /aksi/crypto/keys/{key_id}`
+Get detailed information about specific cryptographic key
+
 ## 🌐 Milana Web Portal
 
 The frontend provides a comprehensive AI superintelligence hub with:
