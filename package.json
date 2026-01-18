@@ -1,0 +1,21 @@
+{
+  "name": "milana-backend",
+  "version": "1.0.0",
+  "description": "Backend server for Milana web portal with AKSI endpoints",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["milana", "aksi", "backend", "api"],
+  "author": "MILANA808",
+  "license": "SEE LICENSE IN LICENSE",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
