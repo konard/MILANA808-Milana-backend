@@ -1,0 +1,13 @@
+AKSI — NOTICE
+=============
+Copyright (c) 2024–2026 AKSI Project
+Contact: aksilove@internet.ru
+
+This repository and the AKSI product are proprietary.
+See LICENSE for full terms.
+
+Visible source ≠ open source.
+Commercial use requires a written agreement.
+
+Keep private keys under .aksi/ secret — do not commit private PEMs.
+Public evaluation: https://milana808.github.io
